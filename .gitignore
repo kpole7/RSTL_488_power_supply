@@ -1,0 +1,13 @@
+# Ignoruj pliki i katalogi Eclipse
+/.settings/
+.cproject
+.project
+
+# Ignoruj pliki wykonywalne
+/build/
+powerSource200A_Svedberg
+
+# Ignoruj plik generowany przez skrypt
+git_revision.cpp
+
+
