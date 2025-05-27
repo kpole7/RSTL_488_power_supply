@@ -6,7 +6,7 @@
 #include <inttypes.h>
 #include <string>
 #include "multiChannel.h"
-#include "modbusRtuMaster.h"
+#include "rstlProtocolMaster.h"
 
 //.................................................................................................
 // Definitions of types

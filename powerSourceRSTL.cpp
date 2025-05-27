@@ -1,4 +1,4 @@
-// powerSource200A_Svedberg.cpp
+// powerSourceRSTL.cpp
 //
 // 1.	The application can operate in two different modes: 'local computer' and 'remote computer'.
 //		This basic concept is shown in applicationFlowDiagram_v2.06.pdf. The application's mode of operation is

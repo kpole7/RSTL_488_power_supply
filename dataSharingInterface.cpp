@@ -5,7 +5,7 @@
 #include <string.h>
 #include <pthread.h>
 #include "dataSharingInterface.h"
-#include "modbusRtuMaster.h"
+#include "rstlProtocolMaster.h"
 #include <iostream>
 
 //.................................................................................................

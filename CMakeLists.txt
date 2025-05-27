@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(powerSource200A_Svedberg)
+project(powerSourceRSTL)
 
 # Compiler settings
 set(CMAKE_CXX_STANDARD 11)
@@ -49,8 +49,8 @@ set(CSRC
 )
 
 set(CCSRC
-    powerSource200A_Svedberg.cpp
-    modbusRtuMaster.cpp
+    powerSourceRSTL.cpp
+    rstlProtocolMaster.cpp
     multiChannel.cpp
     dataSharingInterface.cpp
     graphicalUserInterface.cpp
@@ -59,10 +59,10 @@ set(CCSRC
 )
 
 # The main executable
-add_executable(powerSource200A_Svedberg ${CCSRC} ${CSRC})
+add_executable(powerSourceRSTL ${CCSRC} ${CSRC})
 
 # Libraries linking
-target_link_libraries(powerSource200A_Svedberg
+target_link_libraries(powerSourceRSTL
     ${FLTK_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     ${X11_LIBRARIES}

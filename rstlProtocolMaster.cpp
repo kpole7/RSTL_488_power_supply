@@ -1,4 +1,4 @@
-// modbusRtuMaster.cpp
+// rstlProtocolMaster.cpp
 //
 // Threads: peripheral thread
 //
@@ -16,7 +16,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <pthread.h>
-#include "modbusRtuMaster.h"
+#include "rstlProtocolMaster.h"
 
 #include "dataSharingInterface.h"
 

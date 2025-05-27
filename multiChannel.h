@@ -13,7 +13,7 @@
 
 #define EXITING_COUNTDOWN				5
 
-#define CONFIGURATION_FILE_NAME			"powerSource200A_Svedberg.cfg"
+#define CONFIGURATION_FILE_NAME			"powerSourceRSTL.cfg"
 
 #define CHANNEL_DESCRIPTION_MAX_LENGTH	100
 
