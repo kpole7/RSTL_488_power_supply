@@ -29,6 +29,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/freeModbus/include
     ${CMAKE_CURRENT_SOURCE_DIR}/freeModbus/tcp
     ${CMAKE_CURRENT_SOURCE_DIR}/freeModbus/port
+    /usr/local/include
+    /usr/include
 )
 
 # Source files

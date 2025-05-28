@@ -76,7 +76,7 @@ CommunicationStatesClass DataSharingInterface::getStateOfCommunication(){
 	return CommunicationState;
 }
 
-void DataSharingInterface::loadModbusRtuData( CommunicationStatesClass StateOfChannel, uint16_t* RegistersPtr,
+void DataSharingInterface::loadRstlProtocolData( CommunicationStatesClass StateOfChannel, uint16_t* RegistersPtr,
 		LastFrameErrorClass NewLastFrameError, uint16_t NewPerMilleError, uint16_t NewMaxErrorSequence, bool AcknowledgementOfTransmission )
 {
 	CommunicationState = StateOfChannel;

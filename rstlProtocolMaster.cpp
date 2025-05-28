@@ -200,7 +200,7 @@ void TransmissionChannel::open( int ChannelId ){
 		SerialPortHandler = configureSerialPort( PortNameCharPtr );
 	}
 	if(-1 == SerialPortHandler){
-		TableOfSharedDataForLowLevel[ChannelId].loadModbusRtuData( CommunicationStatesClass::PORT_NOT_OPEN, nullptr,
+		TableOfSharedDataForLowLevel[ChannelId].loadRstlProtocolData( CommunicationStatesClass::PORT_NOT_OPEN, nullptr,
 				LastFrameErrorClass::UNSPECIFIED, 0xFFFFu, 0xFFFFu, false );
 	}
 	CommunicationConsecutiveErrors = 255;
@@ -234,7 +234,7 @@ void TransmissionChannel::singleInquiryOfSlave( int ChannelId ){
 			SerialPortHandler = -1;
 			IsDataTransmissionError = true;
 
-			TableOfSharedDataForLowLevel[ChannelId].loadModbusRtuData( CommunicationStatesClass::PORT_NOT_OPEN, nullptr,
+			TableOfSharedDataForLowLevel[ChannelId].loadRstlProtocolData( CommunicationStatesClass::PORT_NOT_OPEN, nullptr,
 					LastFrameErrorClass::UNSPECIFIED, CommunicationMonitor.getErrorPerMille(),
 					CommunicationMonitor.getErrorMaxSequence(), TransmissionAcknowledgement );
 		}
@@ -306,7 +306,7 @@ void TransmissionChannel::singleInquiryOfSlave( int ChannelId ){
 					}
 				}
 
-				TableOfSharedDataForLowLevel[ChannelId].loadModbusRtuData( CommunicationStatesClass::HEALTHY, &ModbusRegisters[0],
+				TableOfSharedDataForLowLevel[ChannelId].loadRstlProtocolData( CommunicationStatesClass::HEALTHY, &ModbusRegisters[0],
 						FrameLastError, CommunicationMonitor.getErrorPerMille(),
 						CommunicationMonitor.getErrorMaxSequence(), TransmissionAcknowledgement );
 
@@ -336,13 +336,13 @@ void TransmissionChannel::singleInquiryOfSlave( int ChannelId ){
 					CommunicationConsecutiveErrors++;
 				}
 				if(CommunicationConsecutiveErrors > COMMUNICATION_ERRORS_TOLERANCE){
-					TableOfSharedDataForLowLevel[ChannelId].loadModbusRtuData( CommunicationStatesClass::PERMANENT_ERRORS, nullptr,
+					TableOfSharedDataForLowLevel[ChannelId].loadRstlProtocolData( CommunicationStatesClass::PERMANENT_ERRORS, nullptr,
 							FrameLastError, CommunicationMonitor.getErrorPerMille(),
 							CommunicationMonitor.getErrorMaxSequence(), TransmissionAcknowledgement );
 				}
 				else{
 					if(CommunicationConsecutiveErrors > COMMUNICATION_WARNING_TOLERANCE){
-						TableOfSharedDataForLowLevel[ChannelId].loadModbusRtuData( CommunicationStatesClass::TEMPORARY_ERRORS, nullptr,
+						TableOfSharedDataForLowLevel[ChannelId].loadRstlProtocolData( CommunicationStatesClass::TEMPORARY_ERRORS, nullptr,
 								FrameLastError, CommunicationMonitor.getErrorPerMille(),
 								CommunicationMonitor.getErrorMaxSequence(), TransmissionAcknowledgement );
 					}

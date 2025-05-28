@@ -36,7 +36,7 @@ private:
 public:
 	void initialize();
 	CommunicationStatesClass getStateOfCommunication();
-	void loadModbusRtuData( CommunicationStatesClass StateOfChannel, uint16_t* RegistersPtr, LastFrameErrorClass NewLastFrameError,
+	void loadRstlProtocolData( CommunicationStatesClass StateOfChannel, uint16_t* RegistersPtr, LastFrameErrorClass NewLastFrameError,
 			uint16_t NewPerMilleError, uint16_t NewMaxErrorSequence, bool AcknowledgementOfTransmission );
 
 	bool isNewOrder();
