@@ -1247,10 +1247,10 @@ static void remoteComputerControlCallback(Fl_Widget* Widget, void* Data){
 		ControlFromGuiHere = 0;
 	}
 
-	pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_lock( &xLock );
+	pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_lock( &MutexLock );
 	TableOfSharedDataForTcpServer[0][TCP_SERVER_ADDRESS_IS_REMOTE_CONTROL] = ControlFromGuiHere? 0:1;
-	pthread_mutex_unlock( &xLock );
+	pthread_mutex_unlock( &MutexLock );
 
 	updateMainApplicationLabel( nullptr );
 	RemoteComputerControlButton->label( TextOfRemoteComputerControlButton[ ControlFromGuiHere? 0:1 ] );

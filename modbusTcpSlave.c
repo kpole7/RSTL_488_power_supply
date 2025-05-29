@@ -77,6 +77,8 @@ char* ChannelDescriptionTextsPtr[MAX_NUMBER_OF_SERIAL_PORTS];
 // from address TCP_SERVER_DESCRIPTION_LENGTHS_ADDRESS + 3 * TCP_SERVER_DESCRIPTION_ADDRESS_STEP
 char* ChannelDescriptionPlainTextsPtr;
 
+pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+
 // ----------------------- Constants ----------------------------------------
 
 // The TCP server identification label includes the date and time of git last commit
@@ -87,7 +89,6 @@ char* ChannelDescriptionPlainTextsPtr;
 #include "git_revision.cpp"
 
 // ----------------------- Static variables ---------------------------------
-static pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
 static enum ThreadState
 {
     STOPPED,
@@ -168,18 +169,18 @@ static void* pvPollingThread( void *pvParameter )
 static enum ThreadState eGetPollingThreadState(){
     enum ThreadState eCurState;
 
-    ( void )pthread_mutex_lock( &xLock );
+    ( void )pthread_mutex_lock( &MutexLock );
     eCurState = ePollThreadState;
-    ( void )pthread_mutex_unlock( &xLock );
+    ( void )pthread_mutex_unlock( &MutexLock );
 
     return eCurState;
 }
 
 static void eSetPollingThreadState( enum ThreadState eNewState )
 {
-    ( void )pthread_mutex_lock( &xLock );
+    ( void )pthread_mutex_lock( &MutexLock );
     ePollThreadState = eNewState;
-    ( void )pthread_mutex_unlock( &xLock );
+    ( void )pthread_mutex_unlock( &MutexLock );
 }
 
 eMBErrorCode

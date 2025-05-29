@@ -32,9 +32,6 @@ include_directories(
     /usr/local/include
     /usr/include
     /usr/include/c++/13
-#    /home/krzysztof/LocalSoftware/fltk
-#    /home/krzysztof/LocalSoftware/fltk-1.4.1
-#    /home/krzysztof/LocalSoftware/fltk-1.4.1/build
 )
 
 # Source files

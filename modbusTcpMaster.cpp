@@ -165,8 +165,8 @@ bool communicateTcpServer(void){
 		}
 
 		// Checking whether the control is remote or local
-		pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
-		pthread_mutex_lock( &xLock );
+		pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+		pthread_mutex_lock( &MutexLock );
 		if ((uint8_t)getLoadedDataUInt16( TCP_SERVER_ADDRESS_IS_REMOTE_CONTROL ) != ControlFromGuiHere){
 			if (0 != getLoadedDataUInt16( TCP_SERVER_ADDRESS_IS_REMOTE_CONTROL )){
 				assert( 1 == getLoadedDataUInt16( TCP_SERVER_ADDRESS_IS_REMOTE_CONTROL ));
@@ -178,7 +178,7 @@ bool communicateTcpServer(void){
 			}
 			ReturnValue = true;	// to refresh application window label
 		}
-		pthread_mutex_unlock( &xLock );
+		pthread_mutex_unlock( &MutexLock );
 	}
 
 	//--- Activities related to the following sectors ---
@@ -209,12 +209,12 @@ bool communicateTcpServer(void){
 					}
 					if (0 == TextLoadedViaModbusTcp[ ChannelDescriptionTextLengths[M]-1 ]){ // checking that the text is properly terminated
 
-						pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
-						pthread_mutex_lock( &xLock );
+						pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+						pthread_mutex_lock( &MutexLock );
 						DescriptionTextCopies[M] = TextLoadedViaModbusTcp;
 						TableOfSharedDataForLowLevel[M].setDescription( &DescriptionTextCopies[M] );
 						TableOfSharedDataForGui[M].setDescription( &DescriptionTextCopies[M] );
-						pthread_mutex_unlock( &xLock );
+						pthread_mutex_unlock( &MutexLock );
 
 						ReturnValue = true;
 #if 0 // debugging

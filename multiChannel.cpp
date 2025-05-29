@@ -82,7 +82,7 @@ static bool possibilityOfPsuShuttingdown(uint8_t IndexOfChannel);
 void peripheralThread(void) {
     struct timespec TimeSpecification0, TimeSpecification1;
     uint8_t J, TimeDivider, TemporaryControlFromGuiHere;
-	pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
 
     TimeDivider = 0;
 
@@ -92,9 +92,9 @@ void peripheralThread(void) {
 		return;
 	}
 
-	pthread_mutex_lock( &xLock );
+	pthread_mutex_lock( &MutexLock );
 	UpdateConfigurableWidgets = true;
-	pthread_mutex_unlock( &xLock );
+	pthread_mutex_unlock( &MutexLock );
 
 	synchronizeDataAcrossThreads();
 
@@ -103,9 +103,9 @@ void peripheralThread(void) {
 		// Start yet another thread for Modbus TCP server (slave)
 		J = (uint8_t)initializeModbusTcpSlave();
 	    if (J != 0){
-	    	pthread_mutex_lock( &xLock );
+	    	pthread_mutex_lock( &MutexLock );
 	    	ActiveModbusTcpServer = true;
-	    	pthread_mutex_unlock( &xLock );
+	    	pthread_mutex_unlock( &MutexLock );
 	    }
 	    else{
 	    	Fl::awake( displayTcpConnectionErrorMessage, nullptr );
@@ -155,9 +155,9 @@ void peripheralThread(void) {
 				    	Fl::awake( displayChannelWidgets, (void*)TableOfGroupsPtr[J] );
 				    }
 
-					pthread_mutex_lock( &xLock );
+					pthread_mutex_lock( &MutexLock );
 					TemporaryControlFromGuiHere = ControlFromGuiHere;
-					pthread_mutex_unlock( &xLock );
+					pthread_mutex_unlock( &MutexLock );
 				    if (0 == TemporaryControlFromGuiHere){
 				    	Fl::awake( closeSetpointDialogIfActive, nullptr );
 				    }
@@ -268,10 +268,10 @@ uint8_t configurationFileParsing(void) {
     }
     IsModbusTcpSlave = (MatchesTcpSlave? 1 : 0);
 
-    pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_lock( &xLock );
+    pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_lock( &MutexLock );
     ControlFromGuiHere = IsModbusTcpSlave; // the default value
-	pthread_mutex_unlock( &xLock );
+	pthread_mutex_unlock( &MutexLock );
 
     TableOfSharedDataForTcpServer[0][TCP_SERVER_ADDRESS_IS_REMOTE_CONTROL] = 0;
 
@@ -584,8 +584,8 @@ void waitForSynchronization(void){
 void synchronizeDataAcrossThreads(void){
     for ( int J = 0; J < NumberOfChannels; J++) {
     	// Data synchronization between TableOfSharedDataForLowLevel and TableOfSharedDataForGui
-    	pthread_mutex_t xLock = PTHREAD_MUTEX_INITIALIZER;
-    	pthread_mutex_lock( &xLock );
+    	pthread_mutex_t MutexLock = PTHREAD_MUTEX_INITIALIZER;
+    	pthread_mutex_lock( &MutexLock );
     	if (0 != ControlFromGuiHere){
     		// Checking if there is a new order from the user to the power supply unit
     		if (TableOfSharedDataForGui[J].isNewOrder()){
@@ -597,12 +597,12 @@ void synchronizeDataAcrossThreads(void){
     	// copying data to GUI
     	memcpy( &(TableOfSharedDataForGui[J]), &(TableOfSharedDataForLowLevel[J]), sizeof(DataSharingInterface) );
     	TableOfSharedDataForGui[J].resetOrderCode(); // because memcpy overwrote TableOfSharedDataForGui[J].OrderCode with a wrong value
-    	pthread_mutex_unlock( &xLock );
+    	pthread_mutex_unlock( &MutexLock );
 
     	if (0 != IsModbusTcpSlave){
     		// the TCP server is active
         	// Data synchronization between TableOfSharedDataForLowLevel and TableOfSharedDataForTcpServer
-        	pthread_mutex_lock( &xLock );
+        	pthread_mutex_lock( &MutexLock );
         	if (0 == ControlFromGuiHere){
         		// Remote control via Modbus TCP is active.
         		// Checking if there is a new order from the remote computer
@@ -616,7 +616,7 @@ void synchronizeDataAcrossThreads(void){
         	TableOfSharedDataForLowLevel[J].exportModbusRegisters( &TableOfSharedDataForTcpServer[J+1][0] );
     		TableOfSharedDataForTcpServer[J+1][MODBUS_TCP_ADDRESS_ORDER_CODE] = RTU_ORDER_NONE;
     		TableOfSharedDataForTcpServer[J+1][MODBUS_TCP_ADDRESS_ORDER_VALUE] = 0;
-        	pthread_mutex_unlock( &xLock );
+        	pthread_mutex_unlock( &MutexLock );
     	}
     }
 }
